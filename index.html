@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MITS Internship Application</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      background: white;
+      padding: 20px;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<h1>MITS Internship Application</h1>
+
+<form id="internForm">
+  <label>Name</label>
+  <input type="text" id="name" required />
+
+  <label>Email</label>
+  <input type="email" id="email" required />
+
+  <label>College</label>
+  <input type="text" id="college" required />
+
+  <label>Internship Domain</label>
+  <select id="domain" required>
+    <option value="">-- Select --</option>
+    <option>Full Stack Web Development</option>
+    <option>Frontend Web Development</option>
+    <option>Backend Web Development</option>
+    <option>Artificial Intelligence</option>
+    <option>Cloud Computing</option>
+    <option>Machine Learning</option>
+    <option>Python Programming</option>
+    <option>Java Programming</option>
+    <option>C++ Programming</option>
+    <option>UI/UX Design</option>
+  </select>
+
+  <label>Message</label>
+  <textarea id="message" rows="4" required></textarea>
+
+  <button type="submit">Generate PDF Offer Letter</button>
+</form>
+
+<script>
+  document.getElementById("internForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const college = document.getElementById("college").value.trim();
+    const domain = document.getElementById("domain").value;
+    const message = document.getElementById("message").value.trim();
+
+    if (!name || !email || !college || !domain || !message) {
+      alert("Please fill all fields.");
+      return;
+    }
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text("Offer Letter", 105, 20, null, null, "center");
+    doc.setFontSize(12);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 150, 30);
+
+    doc.text(`Dear ${name},`, 20, 50);
+    doc.text(`\nWe are pleased to inform you that you have been selected for the`, 20, 60);
+    doc.text(`internship program at MITS (Micro Information Technology Services).`, 20, 70);
+    doc.text(`\nDetails:`, 20, 85);
+    doc.text(`- Name: ${name}`, 30, 95);
+    doc.text(`- Email: ${email}`, 30, 105);
+    doc.text(`- College: ${college}`, 30, 115);
+    doc.text(`- Internship Domain: ${domain}`, 30, 125);
+
+    doc.text(`\nWe look forward to your contributions and a successful internship experience.`, 20, 145);
+    doc.text(`\nSincerely,`, 20, 165);
+    doc.text(`Team MITS`, 20, 175);
+
+    doc.save(`OfferLetter-${name.replace(/\s+/g, '')}.pdf`);
+    alert("✅ PDF Offer Letter generated!");
+    document.getElementById("internForm").reset();
+  });
+</script>
+
+</body>
+</html>
